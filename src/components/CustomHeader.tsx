@@ -1,5 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, TextInput, View} from 'react-native';
+import {Colors} from '../consts/Colors';
+import {Typography} from '../consts/Typography';
 
 export const CustomHeader = () => {
   return (
@@ -9,7 +11,7 @@ export const CustomHeader = () => {
         style={styles.textInput}
         placeholder="Search"
         underlineColorAndroid="transparent"
-        placeholderTextColor={'#D0D7DE'}
+        placeholderTextColor={Colors.border}
       />
     </View>
   );
@@ -18,7 +20,7 @@ export const CustomHeader = () => {
 const styles = StyleSheet.create({
   header: {
     height: 58,
-    backgroundColor: '#24292F',
+    backgroundColor: Colors.dark,
     flexDirection: 'row',
     paddingTop: 10,
     paddingLeft: 20,
@@ -29,12 +31,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 37,
     borderWidth: 1,
-    borderColor: '#D0D7DE',
-    fontWeight: '500',
+    borderColor: Colors.border,
     paddingLeft: 17,
-    color: '#D0D7DE',
-    fontSize: 16,
-    lineHeight: 24,
+    color: Colors.border,
     flex: 1,
+    ...Typography.semibold16,
   },
 });

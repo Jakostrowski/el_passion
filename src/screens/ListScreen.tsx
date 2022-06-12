@@ -1,8 +1,9 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {CustomHeader} from '../components/CustomHeader';
-import {Divider} from '../components/Divider';
 import {FlatListItem} from '../components/FlatListItem';
+import {Text} from '../components/Text';
+import {Colors} from '../consts/Colors';
 import {useSearchData} from '../hooks/useSearchData';
 
 export const ListScreen = () => {
@@ -12,14 +13,19 @@ export const ListScreen = () => {
       <CustomHeader />
 
       <View style={styles.dataWrapper}>
-        <Text style={styles.totalText}>{total} results</Text>
-
-        <Divider style={styles.divider} />
+        <Text style={styles.totalText} color="black" typography="h1">
+          {total} results
+        </Text>
 
         <FlatList
           data={data}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContent}
           renderItem={({item}) => (
-            <FlatListItem type={item.type} url={item.url} />
+            <FlatListItem
+              type={item.type}
+              name={item.type ? item.login : item.full_name}
+            />
           )}
         />
       </View>
@@ -31,13 +37,9 @@ const styles = StyleSheet.create({
   totalText: {
     marginTop: 34,
     marginLeft: 1,
-    fontSize: 21,
-    fontWeight: '500',
-    lineHeight: 32,
-    color: '#000',
-    fontFamily: 'Roboto',
+    marginBottom: 20,
   },
-  container: {flex: 1},
-  dataWrapper: {paddingHorizontal: 16},
-  divider: {marginVertical: 20},
+  container: {flex: 1, backgroundColor: Colors.white},
+  dataWrapper: {paddingHorizontal: 16, flex: 1},
+  flatListContent: {flexGrow: 1},
 });

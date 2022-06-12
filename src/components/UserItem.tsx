@@ -1,0 +1,62 @@
+import React from 'react';
+import {Image, StyleSheet, View} from 'react-native';
+import {octokit, userType} from '../hooks/useSearchData';
+import {Divider} from './Divider';
+import {Text} from './Text';
+
+interface Props {
+  userNickname: string;
+}
+
+export const UserItem: React.FC<Props> = ({userNickname}) => {
+  const [data, setData] = React.useState<userType>();
+
+  React.useEffect(() => {
+    (async () => {
+      const userData = await octokit.request(`GET /users/${userNickname}`);
+      if (userData.status === 200) {
+        setData(userData.data);
+      }
+    })();
+  }, [userNickname]);
+
+  return (
+    <>
+      <Divider />
+      <View style={styles.imageContainer}>
+        <Image source={{uri: data?.avatar_url}} style={styles.image} />
+        <Text style={styles.textMargin} color="blue" typography="semibold16">
+          {data?.name}
+        </Text>
+      </View>
+
+      <View style={styles.detailsContainer}>
+        <Text color="gray" typography="semibold16">
+          {data?.login}
+        </Text>
+        {data?.bio && (
+          <Text style={styles.textBio} color="dark" typography="semibold14">
+            {data.bio}
+          </Text>
+        )}
+        {data?.location && (
+          <Text style={styles.textMargin} color="gray" typography="semibold12">
+            {data.location}
+          </Text>
+        )}
+      </View>
+    </>
+  );
+};
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  image: {height: 20, width: 20, borderRadius: 10},
+  textMargin: {marginLeft: 8},
+  detailsContainer: {marginLeft: 28, marginBottom: 16},
+  textBio: {marginTop: 20},
+});
