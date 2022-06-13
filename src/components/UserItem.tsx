@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {octokit, userType} from '../hooks/useSearchData';
-import {Divider} from './Divider';
+import {octokit, UserType} from '../hooks/useSearchData';
 import {Text} from './Text';
 
 interface Props {
@@ -9,7 +8,7 @@ interface Props {
 }
 
 export const UserItem: React.FC<Props> = ({userNickname}) => {
-  const [data, setData] = React.useState<userType>();
+  const [data, setData] = React.useState<UserType>();
 
   React.useEffect(() => {
     (async () => {
@@ -22,7 +21,6 @@ export const UserItem: React.FC<Props> = ({userNickname}) => {
 
   return (
     <>
-      <Divider />
       <View style={styles.imageContainer}>
         <Image source={{uri: data?.avatar_url}} style={styles.image} />
         <Text style={styles.textMargin} color="blue" typography="semibold16">
@@ -35,12 +33,15 @@ export const UserItem: React.FC<Props> = ({userNickname}) => {
           {data?.login}
         </Text>
         {data?.bio && (
-          <Text style={styles.textBio} color="dark" typography="semibold14">
+          <Text color="dark" style={styles.textBio} typography="semibold14">
             {data.bio}
           </Text>
         )}
         {data?.location && (
-          <Text style={styles.textMargin} color="gray" typography="semibold12">
+          <Text
+            color="gray"
+            typography="semibold12"
+            style={styles.textLocation}>
             {data.location}
           </Text>
         )}
@@ -59,4 +60,5 @@ const styles = StyleSheet.create({
   textMargin: {marginLeft: 8},
   detailsContainer: {marginLeft: 28, marginBottom: 16},
   textBio: {marginTop: 20},
+  textLocation: {marginTop: 8},
 });

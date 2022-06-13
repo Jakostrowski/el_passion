@@ -8,4 +8,5 @@ export const Colors = {
   white: '#fff',
   border: '#D0D7DE',
   divider: '#C4C4C4',
+  gitDefault: '#EDEDED',
 };
