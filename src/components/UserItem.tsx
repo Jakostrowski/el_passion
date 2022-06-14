@@ -1,6 +1,8 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {octokit, UserType} from '../hooks/useSearchData';
+import {UserDetails} from '../screens/DetailsScreen';
 import {Text} from './Text';
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
 
 export const UserItem: React.FC<Props> = ({userNickname}) => {
   const [data, setData] = React.useState<UserType>();
+  const {navigate} = useNavigation();
 
   React.useEffect(() => {
     (async () => {
@@ -19,10 +22,22 @@ export const UserItem: React.FC<Props> = ({userNickname}) => {
     })();
   }, [userNickname]);
 
+  const navigateToDetails = () => {
+    const params: UserDetails = {
+      nickname: data?.login,
+      name: data?.name,
+      image_url: data?.avatar_url,
+      followers: data?.followers,
+      following: data?.following,
+    };
+    navigate('DetailsScreen' as never, params as never);
+  };
+
   return (
-    <>
+    <TouchableOpacity onPress={navigateToDetails} disabled={!data}>
       <View style={styles.imageContainer}>
         <Image source={{uri: data?.avatar_url}} style={styles.image} />
+
         <Text style={styles.textMargin} color="blue" typography="semibold16">
           {data?.name}
         </Text>
@@ -32,11 +47,13 @@ export const UserItem: React.FC<Props> = ({userNickname}) => {
         <Text color="gray" typography="semibold16">
           {data?.login}
         </Text>
+
         {data?.bio && (
           <Text color="dark" style={styles.textBio} typography="semibold14">
             {data.bio}
           </Text>
         )}
+
         {data?.location && (
           <Text
             color="gray"
@@ -46,7 +63,7 @@ export const UserItem: React.FC<Props> = ({userNickname}) => {
           </Text>
         )}
       </View>
-    </>
+    </TouchableOpacity>
   );
 };
 

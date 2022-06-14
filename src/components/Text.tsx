@@ -26,6 +26,8 @@ const checkTypography = (typography: TextTypography) => {
   if (typography === 'semibold12') return Typography.semibold12;
   if (typography === 'semibold14') return Typography.semibold14;
   if (typography === 'semibold16') return Typography.semibold16;
+  if (typography === 'semibold20') return Typography.semibold20;
+  if (typography === 'semibold26') return Typography.semibold26;
 };
 
 const useDynamicStyles = (color: TextColor, typography: TextTypography) => {

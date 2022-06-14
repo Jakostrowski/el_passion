@@ -8,6 +8,7 @@ import {useSearchData} from '../hooks/useSearchData';
 
 export const ListScreen = () => {
   const {total, data} = useSearchData();
+
   return (
     <View style={styles.container}>
       <CustomHeader />

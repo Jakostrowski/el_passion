@@ -11,11 +11,7 @@ interface Props {
 
 export const RepoItem: React.FC<Props> = ({repoName}) => {
   const [data, setData] = React.useState<RepoType>();
-  const dynamicStyles = useDynamicStyles(
-    data?.license?.name,
-    data?.open_issues,
-    data?.language,
-  );
+  const dynamicStyles = useDynamicStyles(data?.license?.name, data?.language);
 
   React.useEffect(() => {
     (async () => {
@@ -41,41 +37,44 @@ export const RepoItem: React.FC<Props> = ({repoName}) => {
       </Text>
 
       <View style={styles.detailsContainer}>
-        <Image source={require('../assets/starIcon.png')} />
+        <View style={styles.upperFlexContainer}>
+          <Image source={require('../assets/starIcon.png')} />
 
-        <Text color="gray" typography="semibold12" style={styles.textMargin}>
-          {data?.stargazers_count}
-        </Text>
-
-        <View style={dynamicStyles.languageDot} />
-
-        <Text color="gray" typography="semibold12" style={styles.textMargin}>
-          {data?.language ?? 'Other'}
-        </Text>
-
-        {data?.license?.name && (
-          <Text color="gray" typography="semibold12" style={styles.textLicense}>
-            {data?.license?.name}
-          </Text>
-        )}
-
-        <View style={dynamicStyles.secondDetailsContainer}>
-          <Text
-            color="gray"
-            typography="semibold12"
-            style={dynamicStyles.textUpdatedAt}>
-            Updated {getTimeDiff(data?.updated_at)}
+          <Text color="gray" typography="semibold12" style={styles.textMargin}>
+            {data?.stargazers_count}
           </Text>
 
-          {data?.open_issues !== undefined && data.open_issues > 0 && (
+          <View style={dynamicStyles.languageDot} />
+
+          <Text color="gray" typography="semibold12" style={styles.textMargin}>
+            {data?.language ?? 'Other'}
+          </Text>
+
+          {data?.license?.name && (
             <Text
               color="gray"
               typography="semibold12"
-              style={styles.textIssues}>
-              {data?.open_issues} issues need help
+              style={styles.textLicense}>
+              {data?.license?.name}
             </Text>
           )}
         </View>
+
+        <Text
+          color="gray"
+          typography="semibold12"
+          style={dynamicStyles.textUpdatedAt}>
+          Updated {getTimeDiff(data?.updated_at)}
+        </Text>
+
+        {data?.open_issues !== undefined && data.open_issues > 0 && (
+          <Text
+            color="gray"
+            typography="semibold12"
+            style={dynamicStyles.textIssues}>
+            {data?.open_issues} issues need help
+          </Text>
+        )}
       </View>
     </>
   );
@@ -83,11 +82,8 @@ export const RepoItem: React.FC<Props> = ({repoName}) => {
 
 const useDynamicStyles = (
   license: string | undefined,
-  open_issues: number | undefined,
   language: string | undefined | null,
 ) => {
-  const condition = license || open_issues;
-
   return StyleSheet.create({
     languageDot: {
       backgroundColor: getLanguageColor(language),
@@ -96,13 +92,13 @@ const useDynamicStyles = (
       width: 12,
       borderRadius: 6,
     },
-    secondDetailsContainer: {
-      width: condition ? '100%' : undefined,
-      flexDirection: 'row',
-      marginTop: condition ? 1 : 0,
-    },
     textUpdatedAt: {
-      marginLeft: condition ? 0 : 14,
+      marginLeft: license ? 0 : 14,
+      flexGrow: license ? 0 : 1,
+    },
+    textIssues: {
+      marginLeft: license ? 14 : 0,
+      flexBasis: !license ? '100%' : undefined,
     },
   });
 };
@@ -117,18 +113,21 @@ const styles = StyleSheet.create({
   textFullName: {lineHeight: 16, marginLeft: 8},
   textDescription: {marginLeft: 28, marginTop: 5},
   detailsContainer: {
-    marginLeft: 28,
+    paddingLeft: 28,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginTop: 15,
     alignItems: 'center',
-    flexWrap: 'wrap',
     width: '100%',
     marginBottom: 16,
   },
   textMargin: {marginLeft: 3},
   textLicense: {
     marginLeft: 14,
-    flex: 1,
+    flexGrow: 1,
   },
-  textIssues: {marginLeft: 14},
+  upperFlexContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
