@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import {Colors} from '../consts/Colors';
 import {Typography} from '../consts/Typography';
 import {debounce} from 'lodash';
@@ -18,11 +18,8 @@ export const CustomHeader: React.FC<Props> = ({onChange, searchString}) => {
   const dynamicStyles = useDynamicStyles();
 
   const inputHandler = debounce(e => {
-    if (onChange) {
-      onChange(e);
-    } else {
-      navigate('ListScreen' as never, {searchString: e} as never);
-    }
+    if (onChange) onChange(e);
+    else navigate('ListScreen' as never, {searchString: e} as never);
   }, 500);
 
   return (

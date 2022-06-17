@@ -1,7 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {octokit, UserType} from '../hooks/useSearchData';
+import {UserType} from '../../types';
+import {octokit} from '../hooks/useSearchData';
 import {UserDetails} from '../screens/DetailsScreen';
 import {Text} from './Text';
 

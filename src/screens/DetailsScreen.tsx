@@ -6,8 +6,7 @@ import {FollowersIcon} from '../assets/FollowersIcon';
 import {StarIcon} from '../assets/StarIcon';
 import {CustomHeader} from '../components/CustomHeader';
 import {Text} from '../components/Text';
-import {octokit} from '../hooks/useSearchData';
-import {getTotalPages} from '../modules/parseHeader';
+import {getStars} from '../modules/parseHeader';
 
 export interface UserDetails {
   nickname: string | undefined;
@@ -23,16 +22,8 @@ export const DetailsScreen = () => {
 
   React.useEffect(() => {
     (async () => {
-      const data = await octokit.request(
-        `GET /users/${params.nickname}/starred`,
-        {
-          per_page: 1,
-        },
-      );
-      if (data.status === 200) {
-        if (data.data.length === 0) setStars(0);
-        else setStars(getTotalPages(data.headers.link));
-      }
+      const starsCount = await getStars(params.nickname);
+      setStars(starsCount);
     })();
   }, [params.nickname]);
 

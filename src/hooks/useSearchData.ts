@@ -1,22 +1,10 @@
 import React from 'react';
 import {Octokit} from '@octokit/core';
-import {components} from '@octokit/openapi-types/types';
+import {CompoundData, RepoType, State, UserType} from '../../types';
 
 export const octokit = new Octokit({
   auth: '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',
 });
-
-export type UserType = components['schemas']['user-search-result-item'];
-export type RepoType = components['schemas']['repo-search-result-item'];
-export type CompoundData = Array<UserType & RepoType>;
-
-export type State = {
-  total: number | null;
-  page: number;
-  maxPages: number | null;
-  data: CompoundData;
-  searchString: string;
-};
 
 const initState: State = {
   total: null,

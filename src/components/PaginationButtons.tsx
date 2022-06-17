@@ -2,9 +2,9 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
+import {State} from '../../types';
 import {ArrowLeftDisabled, ArrowLeftEnabled} from '../assets/ArrowLeft';
 import {ArrowRightDisabled, ArrowRightEnabled} from '../assets/ArrowRight';
-import {State} from '../hooks/useSearchData';
 import {Text} from './Text';
 
 interface Props {

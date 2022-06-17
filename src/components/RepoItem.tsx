@@ -1,12 +1,13 @@
 import React from 'react';
-import {octokit, RepoType} from '../hooks/useSearchData';
-import {Image, StyleSheet, View} from 'react-native';
+import {octokit} from '../hooks/useSearchData';
+import {StyleSheet, View} from 'react-native';
 import {Text} from './Text';
 import {getLanguageColor} from '../modules/gitColors';
 import {getTimeDiff} from '../modules/timeDiff';
 import {StarIcon} from '../assets/StarIcon';
 import {SvgXml} from 'react-native-svg';
 import {RepoIcon} from '../assets/RepoIcon';
+import {RepoType} from '../../types';
 
 interface Props {
   repoName: string;
@@ -32,7 +33,6 @@ export const RepoItem: React.FC<Props> = ({repoName}) => {
   return (
     <>
       <View style={styles.imageContainer}>
-        {/* <Image source={require('../assets/repoIcon.png')} /> */}
         <SvgXml xml={RepoIcon} />
 
         <Text
