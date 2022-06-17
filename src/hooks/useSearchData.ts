@@ -3,7 +3,7 @@ import {Octokit} from '@octokit/core';
 import {CompoundData, RepoType, State, UserType} from '../../types';
 
 export const octokit = new Octokit({
-  auth: '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',
+  auth: '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',
 });
 
 const initState: State = {
