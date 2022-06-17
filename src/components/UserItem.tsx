@@ -14,12 +14,16 @@ export const UserItem: React.FC<Props> = ({userNickname}) => {
   const {navigate} = useNavigation();
 
   React.useEffect(() => {
+    let isFocused = true;
     (async () => {
       const userData = await octokit.request(`GET /users/${userNickname}`);
-      if (userData.status === 200) {
+      if (userData.status === 200 && isFocused) {
         setData(userData.data);
       }
     })();
+    return () => {
+      isFocused = false;
+    };
   }, [userNickname]);
 
   const navigateToDetails = () => {

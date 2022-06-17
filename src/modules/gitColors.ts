@@ -15,7 +15,7 @@ type GitColorsType = {
 export const getLanguageColor = (language: string | undefined | null) => {
   if (language) {
     const languageColor = (GitColors as unknown as GitColorsType)[language]
-      .color;
+      ?.color;
     return languageColor;
   } else return Colors.gitDefault;
 };

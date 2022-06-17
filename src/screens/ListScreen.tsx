@@ -1,35 +1,52 @@
+import {useRoute} from '@react-navigation/native';
 import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {CustomHeader} from '../components/CustomHeader';
 import {FlatListItem} from '../components/FlatListItem';
+import {PaginationButtons} from '../components/PaginationButtons';
 import {Text} from '../components/Text';
 import {Colors} from '../consts/Colors';
 import {useSearchData} from '../hooks/useSearchData';
 
 export const ListScreen = () => {
-  const {total, data} = useSearchData();
+  const {state, setState, setData} = useSearchData();
+  const params = useRoute()?.params as {searchString: string};
+
+  React.useEffect(() => {
+    if (params) {
+      setState({...state, searchString: params.searchString});
+    }
+  }, [params]);
+
+  const onChange = (searchString: string) => {
+    setState(prevState => ({...prevState, searchString}));
+  };
+
+  const onPress = async (page: number) => {
+    await setData(page);
+  };
 
   return (
     <View style={styles.container}>
-      <CustomHeader />
+      <CustomHeader onChange={onChange} searchString={params?.searchString} />
 
-      <View style={styles.dataWrapper}>
-        <Text style={styles.totalText} color="black" typography="h1">
-          {total} results
-        </Text>
+      <Text style={styles.totalText} color="black" typography="h1">
+        {state.total} results
+      </Text>
 
-        <FlatList
-          data={data}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.flatListContent}
-          renderItem={({item}) => (
-            <FlatListItem
-              type={item.type}
-              name={item.type ? item.login : item.full_name}
-            />
-          )}
-        />
-      </View>
+      <FlatList
+        data={state.data}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.flatListContent}
+        renderItem={({item}) => (
+          <FlatListItem
+            type={item.type}
+            name={item.type ? item.login : item.full_name}
+          />
+        )}
+      />
+
+      <PaginationButtons state={state} onPress={onPress} />
     </View>
   );
 };
@@ -37,10 +54,12 @@ export const ListScreen = () => {
 const styles = StyleSheet.create({
   totalText: {
     marginTop: 34,
-    marginLeft: 1,
+    marginLeft: 17,
     marginBottom: 20,
   },
   container: {flex: 1, backgroundColor: Colors.white},
-  dataWrapper: {paddingHorizontal: 16, flex: 1},
-  flatListContent: {flexGrow: 1},
+  flatListContent: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
+  },
 });

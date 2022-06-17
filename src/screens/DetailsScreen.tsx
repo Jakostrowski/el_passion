@@ -1,6 +1,9 @@
 import {useRoute} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
+import {SvgXml} from 'react-native-svg';
+import {FollowersIcon} from '../assets/FollowersIcon';
+import {StarIcon} from '../assets/StarIcon';
 import {CustomHeader} from '../components/CustomHeader';
 import {Text} from '../components/Text';
 import {octokit} from '../hooks/useSearchData';
@@ -27,7 +30,8 @@ export const DetailsScreen = () => {
         },
       );
       if (data.status === 200) {
-        setStars(getTotalPages(data.headers.link));
+        if (data.data.length === 0) setStars(0);
+        else setStars(getTotalPages(data.headers.link));
       }
     })();
   }, [params.nickname]);
@@ -48,7 +52,7 @@ export const DetailsScreen = () => {
         </Text>
 
         <View style={styles.flexWrapper}>
-          <Image source={require('../assets/followersIcon.png')} />
+          <SvgXml xml={FollowersIcon} />
 
           <Text color="gray" typography="semibold12" style={styles.margin}>
             {params.followers}
@@ -69,10 +73,7 @@ export const DetailsScreen = () => {
             Following
           </Text>
 
-          <Image
-            source={require('../assets/starIcon.png')}
-            style={styles.biggerMargin}
-          />
+          <SvgXml xml={StarIcon} style={styles.biggerMargin} />
 
           <Text color="gray" typography="semibold12" style={styles.margin}>
             {stars}

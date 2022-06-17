@@ -54,6 +54,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>SegoeUI.ttf</string>
+		<string>Roboto.ttf</string>
 	</array>
 </dict>
 </plist>

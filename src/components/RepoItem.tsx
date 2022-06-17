@@ -4,6 +4,9 @@ import {Image, StyleSheet, View} from 'react-native';
 import {Text} from './Text';
 import {getLanguageColor} from '../modules/gitColors';
 import {getTimeDiff} from '../modules/timeDiff';
+import {StarIcon} from '../assets/StarIcon';
+import {SvgXml} from 'react-native-svg';
+import {RepoIcon} from '../assets/RepoIcon';
 
 interface Props {
   repoName: string;
@@ -14,20 +17,29 @@ export const RepoItem: React.FC<Props> = ({repoName}) => {
   const dynamicStyles = useDynamicStyles(data?.license?.name, data?.language);
 
   React.useEffect(() => {
+    let isFocused = true;
     (async () => {
       const repoData = await octokit.request(`GET /repos/${repoName}`);
-      if (repoData.status === 200) {
+      if (repoData.status === 200 && isFocused) {
         setData(repoData.data);
       }
     })();
+    return () => {
+      isFocused = false;
+    };
   }, [repoName]);
 
   return (
     <>
       <View style={styles.imageContainer}>
-        <Image source={require('../assets/repoIcon.png')} />
+        {/* <Image source={require('../assets/repoIcon.png')} /> */}
+        <SvgXml xml={RepoIcon} />
 
-        <Text color="blue" typography="semibold16" style={styles.textFullName}>
+        <Text
+          color="blue"
+          typography="semibold16"
+          style={styles.textFullName}
+          numberOfLines={1}>
           {data?.full_name}
         </Text>
       </View>
@@ -38,7 +50,7 @@ export const RepoItem: React.FC<Props> = ({repoName}) => {
 
       <View style={styles.detailsContainer}>
         <View style={styles.upperFlexContainer}>
-          <Image source={require('../assets/starIcon.png')} />
+          <SvgXml xml={StarIcon} />
 
           <Text color="gray" typography="semibold12" style={styles.textMargin}>
             {data?.stargazers_count}
@@ -110,7 +122,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 20,
   },
-  textFullName: {lineHeight: 16, marginLeft: 8},
+  textFullName: {
+    lineHeight: 16,
+    marginLeft: 8,
+    paddingRight: 16,
+    flexGrow: 1,
+  },
   textDescription: {marginLeft: 28, marginTop: 5},
   detailsContainer: {
     paddingLeft: 28,

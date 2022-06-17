@@ -11,7 +11,11 @@ interface Props extends TextProps {
 
 export const Text: React.FC<Props> = props => {
   const styles = useDynamicStyles(props.color, props.typography);
-  return <RawText style={[styles.text, props.style]}>{props.children}</RawText>;
+  return (
+    <RawText {...props} style={[styles.text, props.style]}>
+      {props.children}
+    </RawText>
+  );
 };
 
 const checkColor = (color: TextColor) => {
